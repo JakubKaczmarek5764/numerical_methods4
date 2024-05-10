@@ -8,7 +8,8 @@ def import_gauss_coefs_from_file(filename):
         n = int(f.readline().split(' ')[-1]) # number of n
         out[n] = []
         for i in range(n):
-            (weight, x) = f.readline().split(' ')[1:]
+
+            (weight, x) = f.readline().split('  ')[1:]
             out[n].append((float(weight), float(x)))
         _ = f.readline() # empty
     f.close()

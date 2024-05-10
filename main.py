@@ -1,16 +1,9 @@
-# This is a sample Python script.
+import functions
+import integrals
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+function = functions.Composition([functions.Trygonometrical(1), functions.Polynomial([2, 5])])
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+obj = integrals.newton_cotes(function)
+print(obj.calc(.00000001))
+obj2 = integrals.Gauss(function)
+print(obj2.calc_integral(100))

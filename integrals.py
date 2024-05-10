@@ -19,6 +19,7 @@ class newton_cotes:
         self.function = lambda x: function.calc(x) * functions.Chebyshev_weight_function.calc(x)
     def calc(self, eps):
         out = 0
+
         # limit to 1
         diff = float('inf')
         l, r = 0, .5
@@ -27,7 +28,6 @@ class newton_cotes:
         cur_it = 0
         while diff >= eps:
             l, r = r, r + abs(r - l) / 2
-            # print(l, r)
             cur_it = self.calc_segment(l, r, eps)
             out += cur_it
             diff = abs(prev_it - cur_it)
@@ -39,15 +39,12 @@ class newton_cotes:
         l, r = -.5, 0
         prev_it = self.calc_segment(l, r, eps)
         out += prev_it
-        cur_it = 0
         while diff >= eps:
             l, r = l - abs(l - r) / 2, l
-            # print(l, r)
             cur_it = self.calc_segment(l, r, eps)
             out += cur_it
             diff = abs(prev_it - cur_it)
             prev_it = cur_it
-
 
         return out
     def calc_segment(self, a, b, eps):
@@ -60,33 +57,30 @@ class newton_cotes:
             cur_it = self.calc_integral(a, b, num_of_intervals)
             diff = abs(prev_it - cur_it)
             prev_it = cur_it
-        # print(cur_it)
         return cur_it
 
     def calc_integral(self, a, b, num_of_intervals):
-        # print(num_of_intervals)
         val = 0
         interval_width = b - a
         step = interval_width / (num_of_intervals * 2)
 
         points = [a + i * step for i in range(num_of_intervals * 2 + 1)]
-        # print(points)
+
         first_point_val = self.function(points[0])
         for i in range(num_of_intervals):
             last_point_val = self.function(points[2 * i + 2])
             interval_val =  step * 1/3 * (first_point_val + 4 * self.function(points[2 * i + 1]) + last_point_val)
             first_point_val = last_point_val
             val += interval_val
-        # print(val)
         return val
-class Gauss:
+class gauss:
     coefs = import_gauss_coefs_from_file("chebyshev.txt")
     def __init__(self, function):
         self.function = function
 
 
-    def calc_integral(self, num_of_intervals):
+    def calc(self, num_of_intervals):
         val = 0
-        for (weight, x) in Gauss.coefs[num_of_intervals]:
+        for (weight, x) in gauss.coefs[num_of_intervals]:
             val += weight * self.function.calc(x)
         return val

@@ -19,33 +19,33 @@ class newton_cotes:
         self.function = lambda x: function.calc(x) * functions.Chebyshev_weight_function.calc(x)
     def calc(self, eps):
         out = 0
-
+        num_of_nodes = 1
         # limit to 1
         diff = float('inf')
         l, r = 0, .5
-        prev_it = self.calc_segment(l, r, eps)
+        prev_it, _ = self.calc_segment(l, r, eps)
         out += prev_it
         while diff >= eps:
             l, r = r, r + abs(r - l) / 2
-            cur_it = self.calc_segment(l, r, eps)
+            cur_it, tmp_num_of_nodes = self.calc_segment(l, r, eps)
             out += cur_it
             diff = abs(prev_it - cur_it)
             prev_it = cur_it
-
+            num_of_nodes += tmp_num_of_nodes
 
         # limit to -1
         diff = float('inf')
         l, r = -.5, 0
-        prev_it = self.calc_segment(l, r, eps)
+        prev_it, _ = self.calc_segment(l, r, eps)
         out += prev_it
         while diff >= eps:
             l, r = l - abs(l - r) / 2, l
-            cur_it = self.calc_segment(l, r, eps)
+            cur_it, tmp_num_of_nodes = self.calc_segment(l, r, eps)
             out += cur_it
             diff = abs(prev_it - cur_it)
             prev_it = cur_it
-
-        return out
+            num_of_nodes += tmp_num_of_nodes
+        return (out, num_of_nodes)
     def calc_segment(self, a, b, eps):
         diff = float('inf')
         num_of_intervals = 1
@@ -67,16 +67,16 @@ class newton_cotes:
             cur_it *= step / 3
             diff = abs(prev_it - cur_it)
             prev_it = cur_it
-        return cur_it
+        return (cur_it, len(points) - 1)
 
 class gauss:
     coefs = import_gauss_coefs_from_file("chebyshev.txt")
     def __init__(self, function):
         self.function = function
 
-
-    def calc(self, num_of_intervals):
+    def calc(self, num_of_intervals: int):
         val = 0
         for (weight, x) in gauss.coefs[num_of_intervals]:
             val += weight * self.function.calc(x)
         return val
+

@@ -120,8 +120,12 @@ def built_in_functions():
         g =integrals.gauss(func)
         print("newton cotes")
         for eps in epsilons:
-            print("wartosc dla eps =", eps, ":", nc.calc(eps))
+            (val, nodes) = nc.calc(eps)
+
+            print("wartosc dla eps =", eps, ":", val, "wezly:", nodes)
+
         print("gauss")
         for num in  num_of_intervals:
-            print("wartosc dla", num, "wezlow =", g.calc(num))
+            print("wartosc dla", num, "wezlow =", g.calc(num_of_intervals=num))
+
         print("\n\n")

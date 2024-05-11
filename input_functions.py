@@ -14,15 +14,15 @@ def file_input(name):
     f.close()
     return nodes
 
-def plotting(func, a=-.999, b=.999, points=None, step=None, color='C0', linestyle='dotted'):
+def plotting(func, a=-.999, b=.999, points=None, step=None):
     if not step:
         step = abs(a - b)/100
     x_vals, y_vals = func.calc_points(a, b, step)
     plt.grid(True)
     if not points:
-        plt.plot(x_vals, y_vals, linestyle=linestyle, color=color, label="Wykres funkcji f(x)")
+        plt.plot(x_vals, y_vals, label="Wykres funkcji f(x)")
     if points:
-        plt.plot(x_vals, y_vals, linestyle=linestyle, color=color, label="Wielomian interpolacyjny")
+        plt.plot(x_vals, y_vals, label="Wielomian interpolacyjny")
 
     plt.axhline(y=0, c='green')
     if a <= 0 <= b:
@@ -94,6 +94,15 @@ def one_point_jitter(x, range):
 
 
 def built_in_functions():
+    values = [
+        3.14159,
+        -4.55531,
+        0,
+        2,
+        -2,
+        0,
+        26.1257
+    ]
     funcs = [
         functions.Polynomial([0.5, 1]),         # liniowa
         functions.Polynomial([2.1, 2.3, -2.5]), # wielomian
@@ -105,8 +114,7 @@ def built_in_functions():
         functions.Composition([functions.Polynomial([2.1, 2.3, -2.5]),
                                functions.Exponential(2.1),
                                functions.Trygonometrical(1)]),  # złożenie
-        functions.Composition([functions.Trygonometrical(0),
-                               functions.Polynomial([5, 0])])
+
     ]
 
     epsilons = [ .001, .0001, .00001, .000001, .0000001]
@@ -114,6 +122,7 @@ def built_in_functions():
 
     for i, func in enumerate(funcs):
         plotting(functions.with_weight_function(func))
+        plt.savefig(f"wykres {i}.png")
         plt.show()
         print("funkcja ", i)
         nc = integrals.newton_cotes(func)
@@ -122,10 +131,12 @@ def built_in_functions():
         for eps in epsilons:
             (val, nodes) = nc.calc(eps)
 
-            print("wartosc dla eps =", eps, ":", val, "wezly:", nodes)
+            print("wartosc dla eps =", eps, ":", val, "wezly:", nodes, "roznica:", val-values[i])
 
         print("gauss")
+
         for num in  num_of_intervals:
-            print("wartosc dla", num, "wezlow =", g.calc(num_of_intervals=num))
+            val = g.calc(num)
+            print("wartosc dla", num, "wezlow =", val, "roznica:", val-values[i])
 
         print("\n\n")

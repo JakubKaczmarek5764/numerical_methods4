@@ -2,13 +2,14 @@ import math
 
 import numpy as np
 
+import integrals
+
 
 class Function:
     def calc(self, x):
         pass
     def calc_points(self, a, b, step):
         x_vals = np.arange(a, b+step, step)
-
         y_vals = [self.calc(x) for x in x_vals]
         return list(x_vals), y_vals
 class Chebyshev_weight_function(Function):
@@ -50,7 +51,11 @@ class Trygonometrical(Function):
     def calc(self, x):
         return self.func(x)
 
-
+class with_weight_function(Function):
+    def __init__(self, func):
+        self.func = func
+    def calc(self, x):
+        return self.func.calc(x) * Chebyshev_weight_function.calc(x)
 class Exponential(Function):
     def __init__(self, b):
         if b > 0:

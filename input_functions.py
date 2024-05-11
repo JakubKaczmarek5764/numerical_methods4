@@ -3,6 +3,9 @@ import random
 import functions
 import matplotlib.pyplot as plt
 
+import integrals
+
+
 def file_input(name):
     f = open(name, "r")
     nodes = []
@@ -11,7 +14,7 @@ def file_input(name):
     f.close()
     return nodes
 
-def plotting(func, a, b, points=None, step=None, color='C0', linestyle='dotted'):
+def plotting(func, a=-.999, b=.999, points=None, step=None, color='C0', linestyle='dotted'):
     if not step:
         step = abs(a - b)/100
     x_vals, y_vals = func.calc_points(a, b, step)
@@ -88,51 +91,37 @@ def jitter(a, b, num_of_nodes, _range = None):
 def one_point_jitter(x, range):
     return x - (random.random() * range - range / 2)
 
-def built_in_plot(a, b, num_of_nodes, func):
-    x_points = jitter(a, b, num_of_nodes)
-    print(x_points)
-    func_ptr = func
-    points = [(x, func_ptr.calc(x)) for x in x_points]
-    interpolate(func_ptr, a, b, points)
-    plt.show()
+
 
 def built_in_functions():
     funcs = [
         functions.Polynomial([0.5, 1]),         # liniowa
         functions.Polynomial([2.1, 2.3, -2.5]), # wielomian
-        functions.Trygonometrical(3),           # trygonometryczna
+        functions.Trygonometrical(2),           # trygonometryczna
+        functions.Abs(),
+        functions.Composition([functions.Polynomial([-1, 0]), functions.Abs()]),
+        functions.Composition([functions.Trygonometrical(0),
+                               functions.Polynomial([10, 0])]),
+        functions.Composition([functions.Polynomial([2.1, 2.3, -2.5]),
+                               functions.Exponential(2.1),
+                               functions.Trygonometrical(1)]),  # złożenie
+        functions.Composition([functions.Trygonometrical(0),
+                               functions.Polynomial([5, 0])])
     ]
 
-    comp1 = functions.Composition([functions.Polynomial([2.1, 2.3, -2.5]),
-                                   functions.Exponential(2.1),
-                                   functions.Trygonometrical(1)])       # złożenie
-    comp2 = functions.Composition([functions.Trygonometrical(0),
-                                  functions.Polynomial([5, 0])])
-    # liniowa
-    built_in_plot(-4, 4, 2, funcs[0])
-    built_in_plot(-4, 4, 5, funcs[0])
+    epsilons = [ .001, .0001, .00001, .000001, .0000001]
+    num_of_intervals = [2, 10, 25, 50, 100]
 
-    # wielomian
-    built_in_plot(-0.5, 10, 2, funcs[1])
-    built_in_plot(-0.5, 10, 3, funcs[1])
-
-    # moduł
-    built_in_plot(-5, 5, 3, functions.Abs())
-    built_in_plot(-5, 5, 8, functions.Abs())
-    built_in_plot(-5, 5, 15, functions.Abs())
-
-    # trygonometryczna
-    built_in_plot(0.1, 3, 3, funcs[2])
-    built_in_plot(0.1, 3, 6, funcs[2])
-    built_in_plot(0.1, 3, 12, funcs[2])
-
-    # złożenie
-    built_in_plot(-1.6, 3, 3, comp1)
-    built_in_plot(-1.6, 3, 6, comp1)
-    built_in_plot(-1.6, 3, 12, comp1)
-
-    # złożenie
-    built_in_plot(-2, 2, 3, comp2)
-    built_in_plot(-2, 2, 6, comp2)
-    built_in_plot(-2, 2, 12, comp2)
-    built_in_plot(-2, 2, 16, comp2)
+    for i, func in enumerate(funcs):
+        plotting(functions.with_weight_function(func))
+        plt.show()
+        print("funkcja ", i)
+        nc = integrals.newton_cotes(func)
+        g =integrals.gauss(func)
+        print("newton cotes")
+        for eps in epsilons:
+            print("wartosc dla eps =", eps, ":", nc.calc(eps))
+        print("gauss")
+        for num in  num_of_intervals:
+            print("wartosc dla", num, "wezlow =", g.calc(num))
+        print("\n\n")

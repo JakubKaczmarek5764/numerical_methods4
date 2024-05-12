@@ -95,13 +95,13 @@ def one_point_jitter(x, range):
 
 def built_in_functions():
     values = [
-        3.14159,
-        -4.55531,
+        3.141592653590,
+        -4.555309347705,
         0,
         2,
         -2,
         0,
-        26.1257
+        26.125666961377
     ]
     funcs = [
         functions.Polynomial([0.5, 1]),         # liniowa
@@ -131,12 +131,12 @@ def built_in_functions():
         for eps in epsilons:
             (val, nodes) = nc.calc(eps)
 
-            print("wartosc dla eps =", eps, ":", val, "wezly:", nodes, "roznica:", val-values[i])
+            print("wartosc dla eps =", eps, ":", "{a:.12f}".format(a=val), "wezly:", nodes, "roznica:", "{a:.12f}".format(a=round(val-values[i], 12)))
 
         print("gauss")
 
         for num in  num_of_intervals:
             val = g.calc(num)
-            print("wartosc dla", num, "wezlow =", val, "roznica:", val-values[i])
+            print("wartosc dla", num, "wezlow =", "{a:.12f}".format(a=val), "roznica:", "{a:.12f}".format(a=round(val-values[i], 12)))
 
         print("\n\n")

@@ -118,7 +118,7 @@ def built_in_functions():
     ]
 
     epsilons = [ .001, .0001, .00001, .000001, .0000001]
-    num_of_intervals = [2, 10, 25, 50, 100]
+    num_of_intervals = [2, 3, 4, 5]
 
     for i, func in enumerate(funcs):
         plotting(functions.with_weight_function(func))

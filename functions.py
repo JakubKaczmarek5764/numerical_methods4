@@ -12,6 +12,15 @@ class Function:
         x_vals = np.arange(a, b+step, step)
         y_vals = [self.calc(x) for x in x_vals]
         return list(x_vals), y_vals
+class Chebyshev(Function):
+    def __init__(self, deg, function):
+        self.deg = deg
+        self.function = function
+        self.calc_polynomials()
+    def calc_polynomials(self):
+        self.arr = []
+
+
 class Chebyshev_weight_function(Function):
     @staticmethod
     def calc(x):

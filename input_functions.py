@@ -94,49 +94,25 @@ def one_point_jitter(x, range):
 
 
 def built_in_functions():
-    values = [
-        3.14159,
-        -4.55531,
-        0,
-        2,
-        -2,
-        0,
-        26.1257
-    ]
+
     funcs = [
-        functions.Polynomial([0.5, 1]),         # liniowa
+        # functions.Polynomial([0.5, 1]),         # liniowa
         functions.Polynomial([2.1, 2.3, -2.5]), # wielomian
         functions.Trygonometrical(2),           # trygonometryczna
         functions.Abs(),
         functions.Composition([functions.Polynomial([-1, 0]), functions.Abs()]),
-        functions.Composition([functions.Trygonometrical(0),
-                               functions.Polynomial([10, 0])]),
-        functions.Composition([functions.Polynomial([2.1, 2.3, -2.5]),
-                               functions.Exponential(2.1),
-                               functions.Trygonometrical(1)]),  # złożenie
+        # functions.Composition([functions.Trygonometrical(0),
+        #                        functions.Polynomial([10, 0])]),
+        # functions.Composition([functions.Polynomial([2.1, 2.3, -2.5]),
+        #                        functions.Exponential(2.1),
+        #                        functions.Trygonometrical(1)]),  # złożenie
 
     ]
 
-    epsilons = [ .001, .0001, .00001, .000001, .0000001]
-    num_of_intervals = [2, 3, 4, 5]
+    degrees = [2, 5, 10]
 
     for i, func in enumerate(funcs):
-        plotting(functions.with_weight_function(func))
-        plt.savefig(f"wykres {i}.png")
+        plotting(func)
+        for degree in degrees:
+            plotting(functions.chebyshev_polynomial(func, degree))
         plt.show()
-        print("funkcja ", i)
-        nc = integrals.newton_cotes(func)
-        g =integrals.gauss(func)
-        print("newton cotes")
-        for eps in epsilons:
-            (val, nodes) = nc.calc(eps)
-
-            print("wartosc dla eps =", eps, ":", val, "wezly:", nodes, "roznica:", val-values[i])
-
-        print("gauss")
-
-        for num in  num_of_intervals:
-            val = g.calc(num)
-            print("wartosc dla", num, "wezlow =", val, "roznica:", val-values[i])
-
-        print("\n\n")

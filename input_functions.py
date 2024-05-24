@@ -98,15 +98,18 @@ def built_in_functions():
     funcs = [
         # functions.Polynomial([0.5, 1]),         # liniowa
         # functions.Polynomial([2.1, 2.3, -2.5]), # wielomian
-        # functions.Trygonometrical(2),           # trygonometryczna
+        # functions.Trygonometrical(0),           # trygonometryczna
         # functions.Abs(),
         # functions.Composition([functions.Polynomial([-1, 0]), functions.Abs()]),
 
-        functions.Composition([functions.Trygonometrical(0),
-                               functions.Polynomial([10, 0])]),
-        functions.Composition([functions.Polynomial([2.1, 2.3, -2.5]),
-                               functions.Exponential(2.1),
-                               functions.Trygonometrical(1)]),  # złożenie
+        # functions.Composition([functions.Trygonometrical(0),
+        #                        functions.Polynomial([10, 0])]),
+        # functions.Composition([functions.Polynomial([2.1, 2.3, -2.5]),
+        #                        functions.Exponential(2.1),
+        #                        functions.Trygonometrical(1)]),  # złożenie
+        functions.Composition([functions.Polynomial([8, 3]),    # huhu
+                               functions.Trygonometrical(0),
+                               functions.Polynomial([15, 0])])
 
     ]
 

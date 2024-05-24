@@ -97,15 +97,16 @@ def built_in_functions():
 
     funcs = [
         # functions.Polynomial([0.5, 1]),         # liniowa
-        functions.Polynomial([2.1, 2.3, -2.5]), # wielomian
-        functions.Trygonometrical(2),           # trygonometryczna
-        functions.Abs(),
-        functions.Composition([functions.Polynomial([-1, 0]), functions.Abs()]),
-        # functions.Composition([functions.Trygonometrical(0),
-        #                        functions.Polynomial([10, 0])]),
-        # functions.Composition([functions.Polynomial([2.1, 2.3, -2.5]),
-        #                        functions.Exponential(2.1),
-        #                        functions.Trygonometrical(1)]),  # złożenie
+        # functions.Polynomial([2.1, 2.3, -2.5]), # wielomian
+        # functions.Trygonometrical(2),           # trygonometryczna
+        # functions.Abs(),
+        # functions.Composition([functions.Polynomial([-1, 0]), functions.Abs()]),
+
+        functions.Composition([functions.Trygonometrical(0),
+                               functions.Polynomial([10, 0])]),
+        functions.Composition([functions.Polynomial([2.1, 2.3, -2.5]),
+                               functions.Exponential(2.1),
+                               functions.Trygonometrical(1)]),  # złożenie
 
     ]
 
@@ -115,5 +116,5 @@ def built_in_functions():
         plotting(func)
         for degree in degrees:
             plotting(functions.chebyshev_polynomial(func, degree))
+            print(functions.chebyshev_polynomial(func, degree).error())
         plt.show()
-        print(functions.chebyshev_polynomial(func, degree).error())

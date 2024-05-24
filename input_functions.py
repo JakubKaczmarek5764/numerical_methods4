@@ -116,3 +116,4 @@ def built_in_functions():
         for degree in degrees:
             plotting(functions.chebyshev_polynomial(func, degree))
         plt.show()
+        print(functions.chebyshev_polynomial(func, degree).error())

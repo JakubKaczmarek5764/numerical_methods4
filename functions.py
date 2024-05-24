@@ -138,8 +138,14 @@ class chebyshev_polynomial(Function):
             self.coefs.append(licznik / mianownik)
 
         return self.coefs
+
     def calc(self, x):
         val = 0
         for i in range(len(self.nodes)):
             val += self.coefs[i] * self.T[i].calc(x)
         return val
+
+    def error(self):
+        y_vals = [self.function.calc(x) for x in self.nodes]
+        approx_vals = [self.calc(x) for x in self.nodes]
+        np.sqrt(np.mean((y_vals - approx_vals) ** 2))

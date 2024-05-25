@@ -96,7 +96,7 @@ def one_point_jitter(x, range):
 def built_in_functions():
 
     funcs = [
-        # functions.Polynomial([0.5, 1]),         # liniowa
+        functions.Polynomial([0.5, 1]),         # liniowa
         # functions.Polynomial([2.1, 2.3, -2.5]), # wielomian
         # functions.Trygonometrical(0),           # trygonometryczna
         # functions.Abs(),

@@ -146,12 +146,12 @@ class chebyshev_polynomial(Function):
         return val
 
     def error(self):
-        y_valstmp = [self.function.calc(x) for x in self.nodes]
-        y_vals = 0
-        for i in range(len(y_valstmp)):
-            y_vals += y_valstmp[i]
-        approx_valstmp = [self.calc(x) for x in self.nodes]
-        approx_vals = 0
-        for i in range(len(approx_valstmp)):
-            approx_vals += approx_valstmp[i]
-        return np.sqrt(np.mean((y_vals - approx_vals) ** 2))
+        func = lambda x: (self.calc(x) - self.function.calc(x)) ** 2
+        l2_error = math.sqrt(integrals.gauss(func).calc(100))
+
+        points = np.linspace(-1, 1, 4000)
+        y_vals = np.array([self.function.calc(x) for x in points])
+        approx_vals = np.array([self.calc(x) for x in points])
+        mse_error = np.sqrt(np.mean((y_vals - approx_vals) ** 2))
+
+        return l2_error, mse_error

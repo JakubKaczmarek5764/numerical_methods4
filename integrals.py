@@ -77,6 +77,6 @@ class gauss:
     def calc(self, num_of_intervals: int):
         val = 0
         for (weight, x) in gauss.coefs[num_of_intervals]:
-            val += weight * self.function.calc(x)
+            val += weight * self.function(x)
         return val
 

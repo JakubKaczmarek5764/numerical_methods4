@@ -14,22 +14,22 @@ def file_input(name):
     f.close()
     return nodes
 
-def plotting(func, a=-.999, b=.999, points=None, step=None):
+def plotting(func, a=-.999, b=.999, points=None, step=None, isAprox = False):
     if not step:
         step = abs(a - b)/100
     x_vals, y_vals = func.calc_points(a, b, step)
     plt.grid(True)
-    if not points:
-        plt.plot(x_vals, y_vals, label="Wykres funkcji f(x)")
-    if points:
-        plt.plot(x_vals, y_vals, label="Wielomian interpolacyjny")
+    if not isAprox:
+        plt.plot(x_vals, y_vals, label="Funkcja aproksymowana")
+    if isAprox:
+        plt.plot(x_vals, y_vals, label="Aproksymacja")
+    plt.legend(loc="best")
 
     plt.axhline(y=0, c='green')
     if a <= 0 <= b:
         plt.axvline(x=0, c='green')
     if points:
         plt.scatter(x=[point[0] for point in points], y=[point[1] for point in points], color='C5', label="Węzeł")
-        plt.legend(loc="best")
 def input_polynomial():
     print("Podaj wspolczynniki wielomianu po spacji: ")
     coefs = [float(x) for x in input().split()]
@@ -72,8 +72,8 @@ def intro(): # zlozenia funkcji podawane sa od lewej do prawej, czyli w przypadk
         x_points = jitter(a, b, num_of_nodes)
         points = [(x, output_function.calc(x)) for x in x_points]
 
-    print(points)
-    interpolate(output_function, a, b, points)
+    # print(points)
+    # interpolate(output_function, a, b, points)
 
 def interpolate(func, a, b, points):
     plotting(func, a, b)
@@ -96,28 +96,28 @@ def one_point_jitter(x, range):
 def built_in_functions():
 
     funcs = [
-        functions.Polynomial([0.5, 1]),         # liniowa
+        # functions.Polynomial([0.5, 1]),         # liniowa
         # functions.Polynomial([2.1, 2.3, -2.5]), # wielomian
         # functions.Trygonometrical(0),           # trygonometryczna
         # functions.Abs(),
-        # functions.Composition([functions.Polynomial([-1, 0]), functions.Abs()]),
 
         # functions.Composition([functions.Trygonometrical(0),
         #                        functions.Polynomial([10, 0])]),
         # functions.Composition([functions.Polynomial([2.1, 2.3, -2.5]),
         #                        functions.Exponential(2.1),
         #                        functions.Trygonometrical(1)]),  # złożenie
-        functions.Composition([functions.Polynomial([8, 3]),    # huhu
-                               functions.Trygonometrical(0),
-                               functions.Polynomial([15, 0])])
 
     ]
 
-    degrees = [2, 5, 10]
+    degrees = [2,3,4]
 
     for i, func in enumerate(funcs):
-        plotting(func)
+        print("Funkcja "+str(i+1))
+
         for degree in degrees:
-            plotting(functions.chebyshev_polynomial(func, degree))
-            print(functions.chebyshev_polynomial(func, degree).error())
-        plt.show()
+            plotting(func)
+            function = functions.chebyshev_polynomial(func, degree)
+            plotting(function, isAprox=True)
+            plt.show()
+            print("Stopien: ",function.deg, "Coefs: ", function.chebyshev_coefficients(), "L2, MSE: ", function.error())
+

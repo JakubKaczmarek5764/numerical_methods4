@@ -96,16 +96,16 @@ def one_point_jitter(x, range):
 def built_in_functions():
 
     funcs = [
-        # functions.Polynomial([0.5, 1]),         # liniowa
-        # functions.Polynomial([2.1, 2.3, -2.5]), # wielomian
-        # functions.Trygonometrical(0),           # trygonometryczna
-        # functions.Abs(),
+        functions.Polynomial([0.5, 1]),         # liniowa
+        functions.Polynomial([2.1, 2.3, -2.5]), # wielomian
+        functions.Trygonometrical(0),           # trygonometryczna
+        functions.Abs(),
 
-        # functions.Composition([functions.Trygonometrical(0),
-        #                        functions.Polynomial([10, 0])]),
-        # functions.Composition([functions.Polynomial([2.1, 2.3, -2.5]),
-        #                        functions.Exponential(2.1),
-        #                        functions.Trygonometrical(1)]),  # złożenie
+        functions.Composition([functions.Trygonometrical(0),
+                               functions.Polynomial([10, 0])]),
+        functions.Composition([functions.Polynomial([2.1, 2.3, -2.5]),
+                               functions.Exponential(2.1),
+                               functions.Trygonometrical(1)]),  # złożenie
 
     ]
 
@@ -119,5 +119,5 @@ def built_in_functions():
             function = functions.chebyshev_polynomial(func, degree)
             plotting(function, isAprox=True)
             plt.show()
-            print("Stopien: ",function.deg, "Coefs: ", function.chebyshev_coefficients(), "L2, MSE: ", function.error())
+            print("Stopien: ", function.num_of_nodes-1, "Coefs: ", function.chebyshev_coefficients(), "L2, MSE: ", function.error())
 

@@ -94,20 +94,20 @@ class chebyshev_polynomial(Function):
     T = []
     coefs = []
     nodes = []
-    def __init__(self, function, deg):
+    def __init__(self, function, num_of_nodes):
         self.function = function
-        self.deg = deg
-        self.nodes = [node for (_, node) in integrals.import_gauss_coefs_from_file('chebyshev.txt')[deg]]
+        self.num_of_nodes = num_of_nodes
+        self.nodes = [node for (_, node) in integrals.import_gauss_coefs_from_file('chebyshev.txt')[num_of_nodes]]
         self.chebyshev_coefficients()
         self.generate()
     def generate(self):
         self.T.clear()
-        if self.deg >= 0:
+        if self.num_of_nodes >= 0:
             self.T.append(np.array([1]))
-        if self.deg >= 1:
+        if self.num_of_nodes >= 1:
             self.T.append(np.array([1, 0]))
 
-        for k in range(2, self.deg + 1):
+        for k in range(2, self.num_of_nodes + 1):
             tmp_T_1 = self.T[k - 1]
             # print(tmp_T_1)
             tmp_T_2 = np.concatenate(([0, 0], self.T[k - 2]))
@@ -120,16 +120,13 @@ class chebyshev_polynomial(Function):
         self.T = [Polynomial(list(coefs)) for coefs in self.T]
 
     def chebyshev_coefficients(self):
-        """
-        Oblicza współczynniki wielomianu Czebyszewa dla funkcji f
-        przy użyciu węzłów Czebyszewa.
-        """
+
         n = len(self.nodes)
         values = [self.function.calc(x) for x in self.nodes]
         self.coefs = []
         for i in range(n):
             licznik, mianownik = 0, 0
-            stopien = n
+            stopien = n + 1
             waga = math.pi / stopien
             for j in range(n):
                 T_n_x = math.cos(i * math.acos(self.nodes[j]))
@@ -147,7 +144,7 @@ class chebyshev_polynomial(Function):
 
     def error(self):
         func = lambda x: (self.calc(x) - self.function.calc(x)) ** 2
-        l2_error = math.sqrt(integrals.gauss(func).calc(100))
+        l2_error = math.sqrt(integrals.newton_cotes(func).calc(0.00001)[0])
 
         points = np.linspace(-1, 1, 4000)
         y_vals = np.array([self.function.calc(x) for x in points])

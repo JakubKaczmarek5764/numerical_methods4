@@ -16,7 +16,7 @@ def import_gauss_coefs_from_file(filename):
     return out
 class newton_cotes:
     def __init__(self, function):
-        self.function = lambda x: function.calc(x) * functions.Chebyshev_weight_function.calc(x)
+        self.function = function
     def calc(self, eps):
         out = 0
         num_of_nodes = 1
